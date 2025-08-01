@@ -1,9 +1,8 @@
-package com.keyin.Travel_api_Sprint1.rest.Passenger;
-
+package com.keyin.Travel_api_Backend_final_sprint.rest.Passenger;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Aircraft.Aircraft;
+import com.keyin.Travel_api_Backend_final_sprint.rest.City.City;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Flight.Flight;
 import jakarta.persistence.*;
-import com.keyin.Travel_api_Sprint1.rest.Aircraft.Aircraft;
-import com.keyin.Travel_api_Sprint1.rest.City.City;
-
 import java.util.List;
 
 @Entity
@@ -21,70 +20,70 @@ public class Passenger {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @ManyToMany
-    @JoinTable(
-            name = "passenger_aircraft",
-            joinColumns = @JoinColumn(name = "passenger_id"),
-            inverseJoinColumns = @JoinColumn(name = "aircraft_id")
-    )
-    private List<Aircraft> aircraftList;
+    @ManyToOne
+    @JoinColumn(name = "flight_id")
+    private Flight flight;
 
 
     public Passenger() {
     }
 
-    public Passenger(String firstName, String lastName, String phoneNumber, City city) {
+
+
+    public Passenger(Long id, String firstName, String lastName, String phoneNumber, City city, Flight flight) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.city = city;
+        this.flight = flight;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public City getCity() {
-        return city;
-    }
-
-    public List<Aircraft> getAircraftList() {
-        return aircraftList;
-    }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    public City getCity() {
+        return city;
+    }
+
     public void setCity(City city) {
         this.city = city;
     }
 
-    public void setAircraftList(List<Aircraft> aircraftList) {
-        this.aircraftList = aircraftList;
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight;
     }
 }

@@ -1,9 +1,9 @@
-package com.keyin.Travel_api_Sprint1.rest.Airport;
-
+package com.keyin.Travel_api_Backend_final_sprint.rest.Airport;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Aircraft.Aircraft;
+import com.keyin.Travel_api_Backend_final_sprint.rest.City.City;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Flight.Flight;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Gate.Gate;
 import jakarta.persistence.*;
-import com.keyin.Travel_api_Sprint1.rest.Aircraft.Aircraft;
-import com.keyin.Travel_api_Sprint1.rest.City.City;
-
 import java.util.List;
 
 @Entity
@@ -18,21 +18,34 @@ public class Airport {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @ManyToMany(mappedBy = "airports")
-    private List<Aircraft> aircraftList;
+    @OneToMany(mappedBy = "departureAirport")
+    private List<Flight> departingFlights;
+
+    @OneToMany(mappedBy = "arrivalAirport")
+    private List<Flight> arrivingFlights;
+
+    @OneToMany(mappedBy = "airport", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Gate> gates;
+
+
 
     public Airport() {
     }
 
-    public Airport(String name, String code, City city) {
+    public Airport(Long id, String name, String code, City city, List<Flight> departingFlights, List<Flight> arrivingFlights, List<Gate> gates) {
+        this.id = id;
         this.name = name;
         this.code = code;
         this.city = city;
+        this.departingFlights = departingFlights;
+        this.arrivingFlights = arrivingFlights;
+        this.gates = gates;
     }
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -40,6 +53,7 @@ public class Airport {
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -47,6 +61,7 @@ public class Airport {
     public String getCode() {
         return code;
     }
+
     public void setCode(String code) {
         this.code = code;
     }
@@ -54,15 +69,32 @@ public class Airport {
     public City getCity() {
         return city;
     }
+
     public void setCity(City city) {
         this.city = city;
     }
 
-
-    public List<Aircraft> getAircraftList() {
-        return aircraftList;
+    public List<Flight> getDepartingFlights() {
+        return departingFlights;
     }
-    public void setAircraftList(List<Aircraft> aircraftList) {
-        this.aircraftList = aircraftList;
+
+    public void setDepartingFlights(List<Flight> departingFlights) {
+        this.departingFlights = departingFlights;
+    }
+
+    public List<Flight> getArrivingFlights() {
+        return arrivingFlights;
+    }
+
+    public void setArrivingFlights(List<Flight> arrivingFlights) {
+        this.arrivingFlights = arrivingFlights;
+    }
+
+    public List<Gate> getGates() {
+        return gates;
+    }
+
+    public void setGates(List<Gate> gates) {
+        this.gates = gates;
     }
 }

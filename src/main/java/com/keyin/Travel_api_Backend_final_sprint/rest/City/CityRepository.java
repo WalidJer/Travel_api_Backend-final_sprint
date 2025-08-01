@@ -1,4 +1,4 @@
-package com.keyin.Travel_api_Sprint1.rest.City;
+package com.keyin.Travel_api_Backend_final_sprint.rest.City;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

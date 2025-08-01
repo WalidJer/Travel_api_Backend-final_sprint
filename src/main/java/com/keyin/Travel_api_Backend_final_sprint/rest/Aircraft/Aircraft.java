@@ -1,9 +1,10 @@
-package com.keyin.Travel_api_Sprint1.rest.Aircraft;
-
+package com.keyin.Travel_api_Backend_final_sprint.rest.Aircraft;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Airline.Airline;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Airport.Airport;
+import com.keyin.Travel_api_Backend_final_sprint.rest.City.City;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Flight.Flight;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Passenger.Passenger;
 import jakarta.persistence.*;
-import com.keyin.Travel_api_Sprint1.rest.Airport.Airport;
-import com.keyin.Travel_api_Sprint1.rest.Passenger.Passenger;
-
 import java.util.List;
 
 @Entity
@@ -14,36 +15,32 @@ public class Aircraft {
     private Long id;
 
     private String model;
-    private String airlineName;
     private int capacity;
 
 
-    @ManyToMany(mappedBy = "aircraftList")
-    private List<Passenger> passengers;
+    @ManyToOne
+    @JoinColumn(name = "airline_id")
+    private Airline airline;
 
-    @ManyToMany
-    @JoinTable(
-            name = "aircraft_airport",
-            joinColumns = @JoinColumn(name = "aircraft_id"),
-            inverseJoinColumns = @JoinColumn(name = "airport_id")
-    )
-
-    private List<Airport> airports;
+    @OneToMany(mappedBy = "aircraft")
+    private List<Flight> flights;
 
 
     public Aircraft() {
     }
 
-    public Aircraft(String model, String airlineName, int capacity) {
+    public Aircraft(Long id, String model, int capacity, Airline airline, List<Flight> flights) {
+        this.id = id;
         this.model = model;
-        this.airlineName = airlineName;
         this.capacity = capacity;
-
+        this.airline = airline;
+        this.flights = flights;
     }
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -51,40 +48,32 @@ public class Aircraft {
     public String getModel() {
         return model;
     }
+
     public void setModel(String model) {
         this.model = model;
     }
 
-
     public int getCapacity() {
         return capacity;
     }
+
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
 
-
-    public List<Passenger> getPassengers() {
-        return passengers;
-    }
-    public void setPassengers(List<Passenger> passengers) {
-        this.passengers = passengers;
+    public Airline getAirline() {
+        return airline;
     }
 
-
-    public String getAirlineName() {
-        return airlineName;
-    }
-    public void setAirlineName(String airlineName) {
-        this.airlineName = airlineName;
+    public void setAirline(Airline airline) {
+        this.airline = airline;
     }
 
-    public List<Airport> getAirports() {
-        return airports;
-    }
-    public void setAirports(List<Airport> airports) {
-        this.airports = airports;
+    public List<Flight> getFlights() {
+        return flights;
     }
 
-
+    public void setFlights(List<Flight> flights) {
+        this.flights = flights;
+    }
 }
