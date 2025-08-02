@@ -18,10 +18,10 @@ public class Airport {
     @JoinColumn(name = "city_id")
     private City city;
 
-    @OneToMany(mappedBy = "departureAirport")
+    @OneToMany(mappedBy = "departureAirport", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flight> departingFlights;
 
-    @OneToMany(mappedBy = "arrivalAirport")
+    @OneToMany(mappedBy = "arrivalAirport",  cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flight> arrivingFlights;
 
     @OneToMany(mappedBy = "airport", cascade = CascadeType.ALL, orphanRemoval = true)
