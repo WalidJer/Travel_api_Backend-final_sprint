@@ -1,9 +1,6 @@
 package com.keyin.Travel_api_Backend_final_sprint.rest.Aircraft;
 import com.keyin.Travel_api_Backend_final_sprint.rest.Airline.Airline;
-import com.keyin.Travel_api_Backend_final_sprint.rest.Airport.Airport;
-import com.keyin.Travel_api_Backend_final_sprint.rest.City.City;
 import com.keyin.Travel_api_Backend_final_sprint.rest.Flight.Flight;
-import com.keyin.Travel_api_Backend_final_sprint.rest.Passenger.Passenger;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -22,7 +19,7 @@ public class Aircraft {
     @JoinColumn(name = "airline_id")
     private Airline airline;
 
-    @OneToMany(mappedBy = "aircraft")
+    @OneToMany(mappedBy = "aircraft", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flight> flights;
 
 
