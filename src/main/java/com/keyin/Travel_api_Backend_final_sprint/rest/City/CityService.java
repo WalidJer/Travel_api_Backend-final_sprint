@@ -44,6 +44,11 @@ public class CityService {
     public void deleteCity(Long id) {
         City city = cityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("City not found"));
+
+        if (!city.getPassengers().isEmpty()) {
+            throw new RuntimeException("Cannot delete city. It's assigned to passengers.");
+        }
+
         cityRepository.delete(city);
     }
 }

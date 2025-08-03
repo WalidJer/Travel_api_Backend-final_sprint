@@ -44,9 +44,14 @@ public class AirlineService {
         return new AirlineDTO(saved);
     }
 
-    public void deleteAirline(Long id){
+
+    public void deleteAirline(Long id) {
         Airline airline = airlineRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("Airline not found"));
+                .orElseThrow(() -> new RuntimeException("Airline not found"));
+
+        if (airline.getFlights() != null && !airline.getFlights().isEmpty()) {
+            throw new RuntimeException("Cannot delete airline. It is assigned to one or more flights.");
+        }
 
         airlineRepository.delete(airline);
     }

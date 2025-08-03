@@ -1,6 +1,7 @@
 package com.keyin.Travel_api_Backend_final_sprint.rest.Passenger;
 
 
+import com.keyin.Travel_api_Backend_final_sprint.rest.Flight.Flight;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,12 @@ public class PassengerService {
     }
 
     public PassengerDTO createPassenger(Passenger passenger) {
+        if (passenger.getFlights() != null) {
+            for (Flight f : passenger.getFlights()) {
+                f.getPassengers().add(passenger); // set both sides
+            }
+        }
+
         return new PassengerDTO(passengerRepository.save(passenger));
     }
 
@@ -36,6 +43,16 @@ public class PassengerService {
         existing.setFirstName(updatedPassenger.getFirstName());
         existing.setLastName(updatedPassenger.getLastName());
         existing.setPhoneNumber(updatedPassenger.getPhoneNumber());
+        existing.setPassportNumber(updatedPassenger.getPassportNumber());
+        existing.setCity(updatedPassenger.getCity());
+
+        existing.getFlights().clear();
+        if (updatedPassenger.getFlights() != null) {
+            existing.getFlights().addAll(updatedPassenger.getFlights());
+            for (Flight f : updatedPassenger.getFlights()) {
+                f.getPassengers().add(existing);
+            }
+        }
 
         return new PassengerDTO(passengerRepository.save(existing));
     }
@@ -43,6 +60,15 @@ public class PassengerService {
     public void deletePassenger(Long id) {
         Passenger passenger = passengerRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Passenger not found"));
+
+        // Remove the passenger from all associated flights
+        if (passenger.getFlights() != null) {
+            for (Flight flight : passenger.getFlights()) {
+                flight.getPassengers().remove(passenger);
+            }
+            passenger.getFlights().clear();
+        }
+
         passengerRepository.delete(passenger);
     }
 }

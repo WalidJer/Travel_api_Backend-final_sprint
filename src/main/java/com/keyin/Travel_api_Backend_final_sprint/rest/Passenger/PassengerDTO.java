@@ -3,15 +3,19 @@ package com.keyin.Travel_api_Backend_final_sprint.rest.Passenger;
 import com.keyin.Travel_api_Backend_final_sprint.rest.City.SimpleCityDTO;
 import com.keyin.Travel_api_Backend_final_sprint.rest.Flight.SimpleFlightDTO;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class PassengerDTO {
 
     private Long id;
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private String passportNumber;
 
     private SimpleCityDTO city;
-    private SimpleFlightDTO flight;
+    private List<SimpleFlightDTO> flights;
 
     public PassengerDTO() {
     }
@@ -22,13 +26,16 @@ public class PassengerDTO {
             this.firstName = passenger.getFirstName();
             this.lastName = passenger.getLastName();
             this.phoneNumber = passenger.getPhoneNumber();
+            this.passportNumber = passenger.getPassportNumber();
 
             if (passenger.getCity() != null) {
                 this.city = new SimpleCityDTO(passenger.getCity());
             }
 
-            if (passenger.getFlight() != null) {
-                this.flight = new SimpleFlightDTO(passenger.getFlight());
+            if (passenger.getFlights() != null) {
+                this.flights = passenger.getFlights().stream()
+                        .map(SimpleFlightDTO::new)
+                        .collect(Collectors.toList());
             }
         }
     }
@@ -67,6 +74,14 @@ public class PassengerDTO {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getPassportNumber() {
+        return passportNumber;
+    }
+
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
+    }
+
     public SimpleCityDTO getCity() {
         return city;
     }
@@ -75,11 +90,11 @@ public class PassengerDTO {
         this.city = city;
     }
 
-    public SimpleFlightDTO getFlight() {
-        return flight;
+    public List<SimpleFlightDTO> getFlights() {
+        return flights;
     }
 
-    public void setFlight(SimpleFlightDTO flight) {
-        this.flight = flight;
+    public void setFlights(List<SimpleFlightDTO> flights) {
+        this.flights = flights;
     }
 }

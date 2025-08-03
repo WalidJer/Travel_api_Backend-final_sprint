@@ -43,6 +43,12 @@ public class AirportService {
     public void deleteAirport(Long id) {
         Airport airport = airportRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Airport not found"));
+
+        if ((airport.getDepartingFlights() != null && !airport.getDepartingFlights().isEmpty())
+                || (airport.getArrivingFlights() != null && !airport.getArrivingFlights().isEmpty())) {
+            throw new RuntimeException("Cannot delete airport. It is used in one or more flights.");
+        }
+
         airportRepository.delete(airport);
     }
 }

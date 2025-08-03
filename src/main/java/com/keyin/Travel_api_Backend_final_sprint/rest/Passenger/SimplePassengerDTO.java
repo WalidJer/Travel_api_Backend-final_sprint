@@ -6,12 +6,14 @@ public class SimplePassengerDTO {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private String passportNumber;
 
     public SimplePassengerDTO(Passenger passenger) {
         this.id = passenger.getId();
         this.firstName = passenger.getFirstName();
         this.lastName = passenger.getLastName();
         this.phoneNumber = passenger.getPhoneNumber();
+        this.passportNumber = passenger.getPassportNumber();
     }
 
     public Long getId() {
@@ -46,4 +48,11 @@ public class SimplePassengerDTO {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getPassportNumber() {
+        return passportNumber;
+    }
+
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
+    }
 }

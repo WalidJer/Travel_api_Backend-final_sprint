@@ -10,6 +10,7 @@ public class GateDTO {
 
     private Long id;
     private String gateNumber;
+    private String terminal;
     private SimpleAirportDTO airport;
     private List<SimpleFlightDTO> flights;
 
@@ -20,6 +21,7 @@ public class GateDTO {
         if (gate != null) {
             this.id = gate.getId();
             this.gateNumber = gate.getGateNumber();
+            this.terminal = gate.getTerminal();
 
             if (gate.getAirport() != null) {
                 this.airport = new SimpleAirportDTO(gate.getAirport());
@@ -49,6 +51,14 @@ public class GateDTO {
 
     public void setGateNumber(String gateNumber) {
         this.gateNumber = gateNumber;
+    }
+
+    public String getTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(String terminal) {
+        this.terminal = terminal;
     }
 
     public SimpleAirportDTO getAirport() {
