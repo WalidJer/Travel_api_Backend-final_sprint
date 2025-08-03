@@ -4,6 +4,7 @@ public class SimpleGateDTO {
 
     private Long id;
     private String gateNumber;
+    private String terminal;
 
     public SimpleGateDTO() {
     }
@@ -11,6 +12,7 @@ public class SimpleGateDTO {
     public SimpleGateDTO(Gate gate){
         this.id = gate.getId();
         this.gateNumber = gate.getGateNumber();
+        this.terminal = gate.getTerminal();
     }
 
     public Long getId() {
@@ -27,5 +29,13 @@ public class SimpleGateDTO {
 
     public void setGateNumber(String gateNumber) {
         this.gateNumber = gateNumber;
+    }
+
+    public String getTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(String terminal) {
+        this.terminal = terminal;
     }
 }

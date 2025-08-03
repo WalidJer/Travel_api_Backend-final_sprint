@@ -13,6 +13,7 @@ public class Gate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String gateNumber;
+    private String terminal;
 
     @OneToMany(mappedBy = "gate", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Flight> flights;
@@ -24,9 +25,10 @@ public class Gate {
     public Gate() {
     }
 
-    public Gate(Long id, String gateNumber, List<Flight> flights, Airport airport) {
+    public Gate(Long id, String gateNumber, String terminal, List<Flight> flights, Airport airport) {
         this.id = id;
         this.gateNumber = gateNumber;
+        this.terminal = terminal;
         this.flights = flights;
         this.airport = airport;
     }
@@ -45,6 +47,14 @@ public class Gate {
 
     public void setGateNumber(String gateNumber) {
         this.gateNumber = gateNumber;
+    }
+
+    public String getTerminal() {
+        return terminal;
+    }
+
+    public void setTerminal(String terminal) {
+        this.terminal = terminal;
     }
 
     public List<Flight> getFlights() {

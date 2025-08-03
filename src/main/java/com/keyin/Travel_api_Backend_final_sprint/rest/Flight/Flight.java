@@ -27,7 +27,12 @@ public class Flight {
     @JoinColumn(name = "gate_id")
     private Gate gate;
 
-    @OneToMany(mappedBy = "flight", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(
+            name = "flight_passenger",
+            joinColumns = @JoinColumn(name = "flight_id"),
+            inverseJoinColumns = @JoinColumn(name = "passenger_id")
+    )
     private List<Passenger> passengers;
 
     @ManyToOne

@@ -48,6 +48,11 @@ public class AircraftService {
         Aircraft aircraft = aircraftRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Aircraft not found"));
 
+        // Optional: check if any flight is using this aircraft
+        if (aircraft.getFlights() != null && !aircraft.getFlights().isEmpty()) {
+            throw new RuntimeException("Cannot delete aircraft. It is assigned to one or more flights.");
+        }
+
         aircraftRepository.delete(aircraft);
     }
 }

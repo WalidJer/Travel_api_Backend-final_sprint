@@ -32,6 +32,7 @@ public class GateService {
                 .orElseThrow(() -> new RuntimeException("Gate not found"));
 
         existing.setGateNumber(updatedGate.getGateNumber());
+        existing.setTerminal(updatedGate.getTerminal());
 
         return new GateDTO(gateRepository.save(existing));
     }
@@ -39,6 +40,11 @@ public class GateService {
     public void deleteGate(Long id) {
         Gate gate = gateRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Gate not found"));
+
+        if (gate.getFlights() != null && !gate.getFlights().isEmpty()) {
+            throw new RuntimeException("Cannot delete gate. It is assigned to one or more flights.");
+        }
+
         gateRepository.delete(gate);
     }
 }

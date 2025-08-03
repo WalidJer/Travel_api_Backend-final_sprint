@@ -3,6 +3,8 @@ import com.keyin.Travel_api_Backend_final_sprint.rest.Aircraft.Aircraft;
 import com.keyin.Travel_api_Backend_final_sprint.rest.City.City;
 import com.keyin.Travel_api_Backend_final_sprint.rest.Flight.Flight;
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,28 +17,28 @@ public class Passenger {
     private String firstName;
     private String lastName;
     private String phoneNumber;
+    private String passportNumber;
 
     @ManyToOne
     @JoinColumn(name = "city_id")
     private City city;
 
-    @ManyToOne
-    @JoinColumn(name = "flight_id")
-    private Flight flight;
+    @ManyToMany(mappedBy = "passengers")
+    private List<Flight> flights = new ArrayList<>();
 
 
     public Passenger() {
     }
 
 
-
-    public Passenger(Long id, String firstName, String lastName, String phoneNumber, City city, Flight flight) {
+    public Passenger(Long id, String firstName, String lastName, String phoneNumber, String passportNumber, City city, List<Flight> flights) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
+        this.passportNumber = passportNumber;
         this.city = city;
-        this.flight = flight;
+        this.flights = flights;
     }
 
     public Long getId() {
@@ -71,6 +73,14 @@ public class Passenger {
         this.phoneNumber = phoneNumber;
     }
 
+    public String getPassportNumber() {
+        return passportNumber;
+    }
+
+    public void setPassportNumber(String passportNumber) {
+        this.passportNumber = passportNumber;
+    }
+
     public City getCity() {
         return city;
     }
@@ -79,11 +89,11 @@ public class Passenger {
         this.city = city;
     }
 
-    public Flight getFlight() {
-        return flight;
+    public List<Flight> getFlights() {
+        return flights;
     }
 
-    public void setFlight(Flight flight) {
-        this.flight = flight;
+    public void setFlights(List<Flight> flights) {
+        this.flights = flights;
     }
 }
