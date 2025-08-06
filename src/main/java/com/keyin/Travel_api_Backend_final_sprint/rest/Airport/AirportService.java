@@ -1,5 +1,6 @@
 package com.keyin.Travel_api_Backend_final_sprint.rest.Airport;
 
+import com.keyin.Travel_api_Backend_final_sprint.rest.City.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,9 @@ public class AirportService {
     @Autowired
     private AirportRepository airportRepository;
 
+    @Autowired
+    private CityRepository cityRepository;
+
     public List<AirportDTO> getAllAirports() {
         return airportRepository.findAll().stream()
                 .map(AirportDTO::new)
@@ -25,6 +29,10 @@ public class AirportService {
     }
 
     public AirportDTO createAirport(Airport airport) {
+        if (airport.getCity() != null && airport.getCity().getId() != null) {
+            airport.setCity(cityRepository.findById(airport.getCity().getId()).orElse(null));
+        }
+
         Airport saved = airportRepository.save(airport);
         return new AirportDTO(saved);
     }

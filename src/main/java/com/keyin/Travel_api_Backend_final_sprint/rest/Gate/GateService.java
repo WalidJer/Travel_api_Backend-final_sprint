@@ -1,5 +1,6 @@
 package com.keyin.Travel_api_Backend_final_sprint.rest.Gate;
 
+import com.keyin.Travel_api_Backend_final_sprint.rest.Airport.AirportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +12,8 @@ import java.util.stream.Collectors;
 public class GateService {
     @Autowired
     private GateRepository gateRepository;
+    @Autowired
+    private AirportRepository airportRepository;
 
     public List<GateDTO> getAllGates() {
         return gateRepository.findAll().stream()
@@ -24,6 +27,9 @@ public class GateService {
     }
 
     public GateDTO createGate(Gate gate) {
+        if (gate.getAirport() != null && gate.getAirport().getId() != null) {
+            gate.setAirport(airportRepository.findById(gate.getAirport().getId()).orElse(null));
+        }
         return new GateDTO(gateRepository.save(gate));
     }
 

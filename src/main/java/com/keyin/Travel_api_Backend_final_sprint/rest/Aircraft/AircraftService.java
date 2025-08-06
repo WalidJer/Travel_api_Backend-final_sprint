@@ -1,4 +1,5 @@
 package com.keyin.Travel_api_Backend_final_sprint.rest.Aircraft;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Airline.AirlineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -11,6 +12,9 @@ public class AircraftService {
 
     @Autowired
     private AircraftRepository aircraftRepository;
+
+    @Autowired
+    private AirlineRepository airlineRepository;
 
     // Get all aircrafts as DTOs
     public List<AircraftDTO> getAllAircrafts() {
@@ -27,6 +31,11 @@ public class AircraftService {
 
     // Create a new aircraft
     public AircraftDTO createAircraft(Aircraft aircraft) {
+        // Attach full airline entity if ID is provided
+        if (aircraft.getAirline() != null && aircraft.getAirline().getId() != null) {
+            airlineRepository.findById(aircraft.getAirline().getId()).ifPresent(aircraft::setAirline);
+        }
+
         Aircraft saved = aircraftRepository.save(aircraft);
         return new AircraftDTO(saved);
     }
