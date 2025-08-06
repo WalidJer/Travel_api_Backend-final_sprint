@@ -1,10 +1,14 @@
 package com.keyin.Travel_api_Backend_final_sprint.rest.Passenger;
 
 
+import com.keyin.Travel_api_Backend_final_sprint.rest.City.City;
+import com.keyin.Travel_api_Backend_final_sprint.rest.City.CityRepository;
 import com.keyin.Travel_api_Backend_final_sprint.rest.Flight.Flight;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Flight.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,6 +18,12 @@ public class PassengerService {
 
     @Autowired
     private PassengerRepository passengerRepository;
+
+    @Autowired
+    private FlightRepository flightRepository;
+
+    @Autowired
+    private CityRepository cityRepository;
 
     public List<PassengerDTO> getAllPassengers() {
         return passengerRepository.findAll().stream()
@@ -27,10 +37,22 @@ public class PassengerService {
     }
 
     public PassengerDTO createPassenger(Passenger passenger) {
+        if (passenger.getCity() != null) {
+            Long cityId = passenger.getCity().getId();
+            City city = cityRepository.findById(cityId)
+                    .orElseThrow(() -> new RuntimeException("City not found"));
+            passenger.setCity(city);
+        }
+
         if (passenger.getFlights() != null) {
+            List<Flight> fullFlights = new ArrayList<>();
             for (Flight f : passenger.getFlights()) {
-                f.getPassengers().add(passenger); // set both sides
+                Flight full = flightRepository.findById(f.getId())
+                        .orElseThrow(() -> new RuntimeException("Flight not found"));
+                full.getPassengers().add(passenger); // bidirectional
+                fullFlights.add(full);
             }
+            passenger.setFlights(fullFlights);
         }
 
         return new PassengerDTO(passengerRepository.save(passenger));

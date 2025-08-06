@@ -1,5 +1,9 @@
 package com.keyin.Travel_api_Backend_final_sprint.rest.Flight;
 
+import com.keyin.Travel_api_Backend_final_sprint.rest.Aircraft.AircraftRepository;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Airline.AirlineRepository;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Airport.AirportRepository;
+import com.keyin.Travel_api_Backend_final_sprint.rest.Gate.GateRepository;
 import com.keyin.Travel_api_Backend_final_sprint.rest.Passenger.Passenger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +18,15 @@ public class FlightService {
 
     @Autowired
     private FlightRepository flightRepository;
+    @Autowired
+    private AirlineRepository airlineRepository;
+    @Autowired
+    private AircraftRepository aircraftRepository;
+    @Autowired
+    private AirportRepository airportRepository;
+    @Autowired
+    private GateRepository gateRepository;
+
 
     public List<FlightDTO> getAllFlights() {
         return flightRepository.findAll().stream()
@@ -27,10 +40,38 @@ public class FlightService {
     }
 
     public FlightDTO createFlight(Flight flight) {
-        // Ensure bidirectional mapping is maintained
+//        // Ensure bidirectional mapping is maintained
+//        if (flight.getPassengers() != null) {
+//            for (Passenger p : flight.getPassengers()) {
+//                p.getFlights().add(flight); // set both sides
+//            }
+//        }
+//
+//        return new FlightDTO(flightRepository.save(flight));
+        if (flight.getAirline() != null && flight.getAirline().getId() != null) {
+            flight.setAirline(airlineRepository.findById(flight.getAirline().getId()).orElse(null));
+        }
+
+        if (flight.getAircraft() != null && flight.getAircraft().getId() != null) {
+            flight.setAircraft(aircraftRepository.findById(flight.getAircraft().getId()).orElse(null));
+        }
+
+        if (flight.getArrivalAirport() != null && flight.getArrivalAirport().getId() != null) {
+            flight.setArrivalAirport(airportRepository.findById(flight.getArrivalAirport().getId()).orElse(null));
+        }
+
+        if (flight.getDepartureAirport() != null && flight.getDepartureAirport().getId() != null) {
+            flight.setDepartureAirport(airportRepository.findById(flight.getDepartureAirport().getId()).orElse(null));
+        }
+
+        if (flight.getGate() != null && flight.getGate().getId() != null) {
+            flight.setGate(gateRepository.findById(flight.getGate().getId()).orElse(null));
+        }
+
+        // ✅ Preserve bidirectional mapping
         if (flight.getPassengers() != null) {
             for (Passenger p : flight.getPassengers()) {
-                p.getFlights().add(flight); // set both sides
+                p.getFlights().add(flight);
             }
         }
 
