@@ -98,7 +98,7 @@ public class PassengerServiceTest {
         assertNotNull(result);
         assertEquals("Alice", result.getFirstName());
 
-        // Ensure bidirectional relationship worked
+
         assertTrue(testFlight.getPassengers().contains(passengerToSave));
     }
 
