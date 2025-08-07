@@ -94,7 +94,7 @@ public class AirportServiceTest {
         Airport input = new Airport();
         input.setName("Test Airport");
         input.setCode("TEST");
-        input.setCity(null);  // no city provided
+        input.setCity(null);
 
         Airport saved = new Airport();
         saved.setId(99L);
@@ -116,7 +116,7 @@ public class AirportServiceTest {
         input.setCode("FAK");
 
         City fakeCity = new City();
-        fakeCity.setId(999L); // Non-existent
+        fakeCity.setId(999L);
         input.setCity(fakeCity);
 
         when(cityRepository.findById(999L)).thenReturn(Optional.empty());
@@ -132,6 +132,6 @@ public class AirportServiceTest {
         AirportDTO result = airportService.createAirport(input);
 
         assertEquals("FAK", result.getCode());
-        assertNull(result.getCity()); // because city ID didn't resolve
+        assertNull(result.getCity());
     }
 }
