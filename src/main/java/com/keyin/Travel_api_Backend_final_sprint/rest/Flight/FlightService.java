@@ -40,14 +40,7 @@ public class FlightService {
     }
 
     public FlightDTO createFlight(Flight flight) {
-//        // Ensure bidirectional mapping is maintained
-//        if (flight.getPassengers() != null) {
-//            for (Passenger p : flight.getPassengers()) {
-//                p.getFlights().add(flight); // set both sides
-//            }
-//        }
-//
-//        return new FlightDTO(flightRepository.save(flight));
+
         if (flight.getAirline() != null && flight.getAirline().getId() != null) {
             flight.setAirline(airlineRepository.findById(flight.getAirline().getId()).orElse(null));
         }
@@ -68,7 +61,7 @@ public class FlightService {
             flight.setGate(gateRepository.findById(flight.getGate().getId()).orElse(null));
         }
 
-        // ✅ Preserve bidirectional mapping
+        // Preserve bidirectional mapping
         if (flight.getPassengers() != null) {
             for (Passenger p : flight.getPassengers()) {
                 p.getFlights().add(flight);
