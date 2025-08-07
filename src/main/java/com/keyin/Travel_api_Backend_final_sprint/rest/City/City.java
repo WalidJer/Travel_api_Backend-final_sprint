@@ -20,6 +20,18 @@ public class City {
     @OneToMany(mappedBy = "city", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Airport> airports;
 
+    public City() {
+    }
+
+    public City(Long id, String name, String province, int population, List<Passenger> passengers, List<Airport> airports) {
+        this.id = id;
+        this.name = name;
+        this.province = province;
+        this.population = population;
+        this.passengers = passengers;
+        this.airports = airports;
+    }
+
     public Long getId() {
         return id;
     }
