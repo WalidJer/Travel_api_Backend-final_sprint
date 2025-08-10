@@ -139,6 +139,42 @@ By default, MySQL console available at: `http://localhost:8080`
   "passengers": []
 }
 ```
+---
+
+
+## Running with Docker
+
+### Step 1: Build the App
+```
+mvn clean package
+```
+### Step 2: Build Docker Image
+```
+docker build -t airport_management_api:latest .
+```
+
+### Step 3: Run with Docker Compose
+```
+docker-compose up
+```
+
+### Step 4: Tag your image
+```
+ docker tag airport_management_api:latest walidjer/airport_management_api:latest
+
+```
+
+### Step 5: Push the image to Docker Hub
+```
+ docker push walidjer/airport_management_api:latest
+
+```
+
+OR
+Simply Use this image in docker-compose.yml
+```yaml
+image: walidjer/airport_management_api:latest
+
 
 
 
